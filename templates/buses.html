@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}Bus Details - Bus Management System{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Bus Fleet Management</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Fleet Overview</h5>
+                    <div class="d-flex justify-content-between mb-3">
+                        <div class="text-center">
+                            <h3 class="mb-0" id="total-buses">{{ buses|length }}</h3>
+                            <small class="text-muted">Total Buses</small>
+                        </div>
+                        <div class="text-center">
+                            <h3 class="mb-0" id="active-buses">{{ active_buses }}</h3>
+                            <small class="text-muted">Active</small>
+                        </div>
+                        <div class="text-center">
+                            <h3 class="mb-0" id="maintenance-buses">{{ maintenance_buses }}</h3>
+                            <small class="text-muted">In Maintenance</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        {% for bus in buses %}
+        <div class="col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Bus {{ bus.bus_number }}</h5>
+                    <span data-status="{{ bus.status }}" class="badge {{ 'bg-success' if bus.status == 'Active' else 'bg-warning' if bus.status == 'Maintenance' else 'bg-danger' }}">
+                        {{ bus.status }}
+                    </span>
+                </div>
+                <img src="{{ bus.image_url or '/static/images/bus' ~ loop.index ~ '.svg' }}" class="card-img-top" alt="Bus {{ bus.bus_number }}" style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <strong>Registration:</strong>
+                        </div>
+                        <div class="col-6">
+                            {{ bus.registration }}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <strong>Capacity:</strong>
+                        </div>
+                        <div class="col-6">
+                            {{ bus.capacity }} passengers
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <strong>Driver:</strong>
+                        </div>
+                        <div class="col-6">
+                            {% if bus.driver %}
+                                {{ bus.driver.name }}
+                            {% else %}
+                                <span class="text-muted">Unassigned</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <strong>Route:</strong>
+                        </div>
+                        <div class="col-6">
+                            {% if bus.route %}
+                                <span data-route-color="{{ bus.route.color_code }}" class="fw-bold">
+                                    {{ bus.route.route_number }}: {{ bus.route.name }}
+                                </span>
+                            {% else %}
+                                <span class="text-muted">Unassigned</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <strong>Current Status:</strong>
+                        </div>
+                        <div class="col-6">
+                            <span data-status="{{ bus.on_time_status }}">{{ bus.on_time_status }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted small">Last Serviced: {{ bus.last_maintenance or '3 weeks ago' }}</span>
+                        <a href="/tracking?bus={{ bus.id }}" class="btn btn-sm btn-primary">Track Location</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Apply route color indicators
+        const routeElements = document.querySelectorAll('[data-route-color]');
+        routeElements.forEach(element => {
+            const color = element.dataset.routeColor;
+            const indicator = document.createElement('span');
+            indicator.classList.add('route-color-indicator');
+            indicator.style.backgroundColor = color;
+            element.prepend(indicator);
+        });
+        
+        // Apply status indicators
+        const statusElements = document.querySelectorAll('[data-status]');
+        statusElements.forEach(element => {
+            const status = element.dataset.status.toLowerCase().replace(/\s+/g, '-');
+            const indicator = document.createElement('span');
+            indicator.classList.add('status-indicator', `status-${status}`);
+            element.prepend(indicator);
+        });
+    });
+</script>
+{% endblock %}

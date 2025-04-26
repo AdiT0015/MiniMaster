@@ -52,6 +52,25 @@ def routes():
 def drivers():
     return render_template('drivers.html')
 
+@app.route('/buses')
+def buses():
+    from models import Bus, Route, Driver
+    buses = Bus.query.all()
+    
+    # Count the number of buses by status
+    active_buses = sum(1 for bus in buses if bus.status == 'Active')
+    maintenance_buses = sum(1 for bus in buses if bus.status == 'Maintenance')
+    
+    for i, bus in enumerate(buses):
+        # Add the driver and route as attributes directly
+        bus.driver = Driver.query.get(bus.driver_id) if bus.driver_id else None
+        bus.route = Route.query.get(bus.route_id) if bus.route_id else None
+    
+    return render_template('buses.html', 
+                         buses=buses, 
+                         active_buses=active_buses, 
+                         maintenance_buses=maintenance_buses)
+
 @app.route('/tracking')
 def tracking():
     return render_template('tracking.html')
