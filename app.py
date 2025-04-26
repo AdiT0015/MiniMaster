@@ -215,7 +215,10 @@ with app.app_context():
                        on_time_status="Delayed", route_id=route_fp2.id, driver_id=driver_priya.id),
             models.Bus(bus_number="HR1003", registration="HR-3456", capacity=42, status="Active", 
                        current_location_lat=29.6857, current_location_lng=76.9905, 
-                       on_time_status="On Time", route_id=route_ar3.id, driver_id=driver_amit.id)
+                       on_time_status="On Time", route_id=route_ar3.id, driver_id=driver_amit.id),
+            models.Bus(bus_number="HR1004", registration="HR-4567", capacity=40, status="Maintenance", 
+                       current_location_lat=28.5355, current_location_lng=77.2910, 
+                       on_time_status="Out of Service", route_id=None, driver_id=None)
         ]
         db.session.add_all(buses)
         db.session.commit()
