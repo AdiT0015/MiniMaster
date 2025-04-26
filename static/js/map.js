@@ -6,8 +6,9 @@ let routes = {};
 
 // Initialize the map
 function initMap() {
-    // Create map centered at a default location (can be adjusted based on your service area)
-    map = L.map('map').setView([40.7128, -74.0060], 12);
+    // Create map centered at Haryana, India
+    // Coordinates for Haryana, India (centered around Chandigarh, the capital)
+    map = L.map('map').setView([29.0588, 76.0856], 8);
     
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -255,44 +256,44 @@ function toggleRouteVisibility(routeId, visible) {
 
 // Simulate bus location data (for demo purposes)
 function simulateBusLocations() {
-    // This function would be replaced with actual API calls
+    // This function is a fallback if API calls fail
     return [
         {
             id: 1,
-            busNumber: "B1001",
-            lat: 40.712, 
-            lng: -74.006,
-            routeName: "Downtown Express",
-            routeNumber: "D1",
+            busNumber: "HR1001",
+            lat: 28.4595, 
+            lng: 77.0266,
+            routeName: "Gurugram-Hisar Express",
+            routeNumber: "GH1",
             routeColor: "#e74c3c",
             status: "On Time",
-            driverName: "John Smith",
+            driverName: "Rajesh Kumar",
             speed: 35,
             lastUpdated: "2 min ago"
         },
         {
             id: 2,
-            busNumber: "B1002",
-            lat: 40.718, 
-            lng: -73.996,
-            routeName: "Uptown Local",
-            routeNumber: "U2",
+            busNumber: "HR1002",
+            lat: 29.1492, 
+            lng: 76.6133,
+            routeName: "Faridabad-Panipat Local",
+            routeNumber: "FP2",
             routeColor: "#3498db",
             status: "Delayed",
-            driverName: "Jane Doe",
+            driverName: "Priya Sharma",
             speed: 15,
             lastUpdated: "1 min ago"
         },
         {
             id: 3,
-            busNumber: "B1003",
-            lat: 40.725, 
-            lng: -73.985,
-            routeName: "Cross Town",
-            routeNumber: "C3",
+            busNumber: "HR1003",
+            lat: 29.6857, 
+            lng: 76.9905,
+            routeName: "Ambala-Rohtak Express",
+            routeNumber: "AR3",
             routeColor: "#2ecc71",
             status: "On Time",
-            driverName: "Robert Johnson",
+            driverName: "Amit Singh",
             speed: 25,
             lastUpdated: "just now"
         }
@@ -301,24 +302,24 @@ function simulateBusLocations() {
 
 // Simulate route data (for demo purposes)
 function simulateRoutes() {
-    // This function would be replaced with actual API calls
+    // This function is a fallback if API calls fail
     return [
         {
             id: 1,
-            number: "D1",
-            name: "Downtown Express",
+            number: "GH1",
+            name: "Gurugram-Hisar Express",
             color: "#e74c3c"
         },
         {
             id: 2,
-            number: "U2",
-            name: "Uptown Local",
+            number: "FP2",
+            name: "Faridabad-Panipat Local",
             color: "#3498db"
         },
         {
             id: 3,
-            number: "C3",
-            name: "Cross Town",
+            number: "AR3",
+            name: "Ambala-Rohtak Express",
             color: "#2ecc71"
         }
     ];

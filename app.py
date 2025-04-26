@@ -152,51 +152,51 @@ with app.app_context():
     
     # Initialize sample data if tables are empty
     if models.Route.query.count() == 0:
-        # Add sample routes
+        # Add sample routes in Haryana, India
         routes = [
-            models.Route(route_number="D1", name="Downtown Express", start_point="Central Station", end_point="Downtown Terminal", color_code="#e74c3c"),
-            models.Route(route_number="U2", name="Uptown Local", start_point="Riverside Plaza", end_point="Uptown Square", color_code="#3498db"),
-            models.Route(route_number="C3", name="Cross Town", start_point="West End", end_point="East Village", color_code="#2ecc71"),
-            models.Route(route_number="A4", name="Airport Express", start_point="Central Station", end_point="International Airport", color_code="#f39c12"),
-            models.Route(route_number="S5", name="South Shore", start_point="City Center", end_point="South Beach", color_code="#9b59b6")
+            models.Route(route_number="GH1", name="Gurugram-Hisar Express", start_point="Gurugram", end_point="Hisar", color_code="#e74c3c"),
+            models.Route(route_number="FP2", name="Faridabad-Panipat Local", start_point="Faridabad", end_point="Panipat", color_code="#3498db"),
+            models.Route(route_number="AR3", name="Ambala-Rohtak Express", start_point="Ambala", end_point="Rohtak", color_code="#2ecc71"),
+            models.Route(route_number="KS4", name="Karnal-Sonipat Express", start_point="Karnal", end_point="Sonipat", color_code="#f39c12"),
+            models.Route(route_number="YR5", name="Yamunanagar-Rewari", start_point="Yamunanagar", end_point="Rewari", color_code="#9b59b6")
         ]
         db.session.add_all(routes)
         db.session.commit()
         
-        # Add sample drivers
+        # Add sample drivers with Indian names
         drivers = [
-            models.Driver(name="John Smith", employee_id="D001", license_number="CDL-12345", phone="(555) 123-4567", email="john.smith@example.com", status="On Duty"),
-            models.Driver(name="Jane Doe", employee_id="D002", license_number="CDL-23456", phone="(555) 234-5678", email="jane.doe@example.com", status="On Duty"),
-            models.Driver(name="Robert Johnson", employee_id="D003", license_number="CDL-34567", phone="(555) 345-6789", email="robert.johnson@example.com", status="On Duty"),
-            models.Driver(name="Maria Garcia", employee_id="D004", license_number="CDL-45678", phone="(555) 456-7890", email="maria.garcia@example.com", status="On Duty"),
-            models.Driver(name="David Lee", employee_id="D005", license_number="CDL-56789", phone="(555) 567-8901", email="david.lee@example.com", status="Available"),
-            models.Driver(name="Sarah Williams", employee_id="D006", license_number="CDL-67890", phone="(555) 678-9012", email="sarah.williams@example.com", status="Available"),
-            models.Driver(name="Thomas Brown", employee_id="D007", license_number="CDL-78901", phone="(555) 789-0123", email="thomas.brown@example.com", status="Off Duty"),
-            models.Driver(name="Lisa Hernandez", employee_id="D008", license_number="CDL-89012", phone="(555) 890-1234", email="lisa.hernandez@example.com", status="On Leave")
+            models.Driver(name="Rajesh Kumar", employee_id="D001", license_number="HR-12345", phone="(91) 9876-123456", email="rajesh.kumar@example.com", status="On Duty"),
+            models.Driver(name="Priya Sharma", employee_id="D002", license_number="HR-23456", phone="(91) 9876-234567", email="priya.sharma@example.com", status="On Duty"),
+            models.Driver(name="Amit Singh", employee_id="D003", license_number="HR-34567", phone="(91) 9876-345678", email="amit.singh@example.com", status="On Duty"),
+            models.Driver(name="Sunita Patel", employee_id="D004", license_number="HR-45678", phone="(91) 9876-456789", email="sunita.patel@example.com", status="On Duty"),
+            models.Driver(name="Vikram Verma", employee_id="D005", license_number="HR-56789", phone="(91) 9876-567890", email="vikram.verma@example.com", status="Available"),
+            models.Driver(name="Anjali Gupta", employee_id="D006", license_number="HR-67890", phone="(91) 9876-678901", email="anjali.gupta@example.com", status="Available"),
+            models.Driver(name="Manish Yadav", employee_id="D007", license_number="HR-78901", phone="(91) 9876-789012", email="manish.yadav@example.com", status="Off Duty"),
+            models.Driver(name="Neha Malhotra", employee_id="D008", license_number="HR-89012", phone="(91) 9876-890123", email="neha.malhotra@example.com", status="On Leave")
         ]
         db.session.add_all(drivers)
         db.session.commit()
         
         # Get routes and drivers for reference
-        route_d1 = models.Route.query.filter_by(route_number="D1").first()
-        route_u2 = models.Route.query.filter_by(route_number="U2").first()
-        route_c3 = models.Route.query.filter_by(route_number="C3").first()
+        route_gh1 = models.Route.query.filter_by(route_number="GH1").first()
+        route_fp2 = models.Route.query.filter_by(route_number="FP2").first()
+        route_ar3 = models.Route.query.filter_by(route_number="AR3").first()
         
-        driver_john = models.Driver.query.filter_by(employee_id="D001").first()
-        driver_jane = models.Driver.query.filter_by(employee_id="D002").first()
-        driver_robert = models.Driver.query.filter_by(employee_id="D003").first()
+        driver_rajesh = models.Driver.query.filter_by(employee_id="D001").first()
+        driver_priya = models.Driver.query.filter_by(employee_id="D002").first()
+        driver_amit = models.Driver.query.filter_by(employee_id="D003").first()
         
-        # Add sample buses
+        # Add sample buses with Haryana locations
         buses = [
-            models.Bus(bus_number="B1001", registration="XYZ-1234", capacity=42, status="Active", 
-                       current_location_lat=40.712, current_location_lng=-74.006, 
-                       on_time_status="On Time", route_id=route_d1.id, driver_id=driver_john.id),
-            models.Bus(bus_number="B1002", registration="XYZ-2345", capacity=36, status="Active", 
-                       current_location_lat=40.718, current_location_lng=-73.996, 
-                       on_time_status="Delayed", route_id=route_u2.id, driver_id=driver_jane.id),
-            models.Bus(bus_number="B1003", registration="XYZ-3456", capacity=42, status="Active", 
-                       current_location_lat=40.725, current_location_lng=-73.985, 
-                       on_time_status="On Time", route_id=route_c3.id, driver_id=driver_robert.id)
+            models.Bus(bus_number="HR1001", registration="HR-1234", capacity=42, status="Active", 
+                       current_location_lat=28.4595, current_location_lng=77.0266, 
+                       on_time_status="On Time", route_id=route_gh1.id, driver_id=driver_john.id),
+            models.Bus(bus_number="HR1002", registration="HR-2345", capacity=36, status="Active", 
+                       current_location_lat=29.1492, current_location_lng=76.6133, 
+                       on_time_status="Delayed", route_id=route_fp2.id, driver_id=driver_jane.id),
+            models.Bus(bus_number="HR1003", registration="HR-3456", capacity=42, status="Active", 
+                       current_location_lat=29.6857, current_location_lng=76.9905, 
+                       on_time_status="On Time", route_id=route_ar3.id, driver_id=driver_robert.id)
         ]
         db.session.add_all(buses)
         db.session.commit()
