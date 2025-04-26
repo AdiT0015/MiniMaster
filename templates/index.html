@@ -1,0 +1,314 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Bus Management System{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block header_actions %}
+<div class="btn-group me-2">
+    <button type="button" class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-share-alt me-1"></i> Share
+    </button>
+    <button type="button" class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-download me-1"></i> Export
+    </button>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- System summary cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card dashboard-card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Active Buses</h6>
+                        <h2 class="mb-0">24</h2>
+                    </div>
+                    <div class="fs-1 opacity-75">
+                        <i class="fas fa-bus"></i>
+                    </div>
+                </div>
+                <p class="card-text mt-2 mb-0 small">
+                    <i class="fas fa-arrow-up me-1"></i>
+                    <span>3 more than yesterday</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card dashboard-card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Active Routes</h6>
+                        <h2 class="mb-0">8</h2>
+                    </div>
+                    <div class="fs-1 opacity-75">
+                        <i class="fas fa-route"></i>
+                    </div>
+                </div>
+                <p class="card-text mt-2 mb-0 small">
+                    <i class="fas fa-check me-1"></i>
+                    <span>All routes operational</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card dashboard-card bg-info text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Active Drivers</h6>
+                        <h2 class="mb-0">32</h2>
+                    </div>
+                    <div class="fs-1 opacity-75">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                </div>
+                <p class="card-text mt-2 mb-0 small">
+                    <i class="fas fa-user-plus me-1"></i>
+                    <span>2 new drivers this week</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card dashboard-card bg-warning text-dark">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="card-title">Delayed Buses</h6>
+                        <h2 class="mb-0">3</h2>
+                    </div>
+                    <div class="fs-1 opacity-75">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <p class="card-text mt-2 mb-0 small">
+                    <i class="fas fa-arrow-down me-1"></i>
+                    <span>2 less than yesterday</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Activity overview -->
+<div class="row g-3 mb-4">
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Route Activity Overview</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Route</th>
+                            <th scope="col">Buses</th>
+                            <th scope="col">On Time</th>
+                            <th scope="col">Delayed</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span data-route-color="#e74c3c">D1: Downtown Express</span></td>
+                            <td>5</td>
+                            <td>4</td>
+                            <td>1</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span data-route-color="#3498db">U2: Uptown Local</span></td>
+                            <td>4</td>
+                            <td>3</td>
+                            <td>1</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span data-route-color="#2ecc71">C3: Cross Town</span></td>
+                            <td>6</td>
+                            <td>5</td>
+                            <td>1</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span data-route-color="#f39c12">A4: Airport Express</span></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span data-route-color="#9b59b6">S5: South Shore</span></td>
+                            <td>3</td>
+                            <td>3</td>
+                            <td>0</td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">System Status</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-success mb-3" role="alert">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-check-circle fs-3"></i>
+                        </div>
+                        <div>
+                            <h6 class="alert-heading mb-1">All Systems Operational</h6>
+                            <p class="mb-0 small">Last checked: Today, 10:30 AM</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <h6>Service Metrics</h6>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>On-Time Performance</span>
+                        <span>87%</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 87%;" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Bus Utilization</span>
+                        <span>92%</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 92%;" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span>Driver Availability</span>
+                        <span>78%</span>
+                    </div>
+                    <div class="progress" style="height: 10px;">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: 78%;" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('tracking') }}" class="btn btn-primary">
+                        <i class="fas fa-map-marker-alt me-2"></i>View Live Map
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick access section -->
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Recent Incidents</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+                    <div class="bg-danger text-white rounded p-2 me-3">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">Traffic Delay - Route C3</h6>
+                        <p class="text-muted small mb-0">Today, 9:15 AM - Bus B1003 delayed by 15 minutes due to traffic congestion</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center border-bottom pb-3 mb-3">
+                    <div class="bg-warning text-dark rounded p-2 me-3">
+                        <i class="fas fa-wrench"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">Maintenance Alert - Bus B1007</h6>
+                        <p class="text-muted small mb-0">Yesterday, 4:30 PM - Scheduled maintenance completed</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="bg-info text-white rounded p-2 me-3">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">Route Change - U2</h6>
+                        <p class="text-muted small mb-0">Yesterday, 2:10 PM - Temporary detour due to road construction</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="#" class="btn btn-sm btn-outline-secondary w-100">View All Incidents</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <a href="{{ url_for('routes') }}" class="btn btn-outline-primary w-100 h-100 py-3">
+                            <i class="fas fa-plus-circle d-block mb-2 fs-3"></i>
+                            Add New Route
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a href="{{ url_for('drivers') }}" class="btn btn-outline-success w-100 h-100 py-3">
+                            <i class="fas fa-user-plus d-block mb-2 fs-3"></i>
+                            Add New Driver
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a href="#" class="btn btn-outline-warning w-100 h-100 py-3">
+                            <i class="fas fa-bell d-block mb-2 fs-3"></i>
+                            Report Incident
+                        </a>
+                    </div>
+                    <div class="col-6">
+                        <a href="#" class="btn btn-outline-info w-100 h-100 py-3">
+                            <i class="fas fa-file-alt d-block mb-2 fs-3"></i>
+                            Generate Report
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+/* Custom styles to supplement Bootstrap */
+:root {
+    --transport-primary: #3498db;
+    --transport-secondary: #2c3e50;
+    --transport-success: #2ecc71;
+    --transport-danger: #e74c3c;
+    --transport-warning: #f39c12;
+    --transport-info: #1abc9c;
+}
+
+/* Dashboard card styling */
+.dashboard-card {
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Route color indicators */
+.route-color-indicator {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+/* Status indicators */
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.status-active, .status-available, .status-on-time {
+    background-color: var(--bs-success);
+}
+
+.status-maintenance, .status-on-duty, .status-delayed {
+    background-color: var(--bs-warning);
+}
+
+.status-out-of-service, .status-off-duty, .status-ahead {
+    background-color: var(--bs-danger);
+}
+
+.status-on-leave {
+    background-color: var(--bs-info);
+}
+
+/* Map container */
+#map {
+    height: 500px;
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Custom bus icon for map */
+.bus-icon {
+    background-color: rgba(52, 152, 219, 0.8);
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    border: 2px solid white;
+}
+
+/* Bus tracker page specific styles */
+.bus-info-sidebar {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Navigation sidebar active styling */
+.nav-link.active {
+    background-color: var(--bs-secondary);
+    color: white !important;
+    border-radius: 5px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #map {
+        height: 300px;
+    }
+    
+    .bus-info-sidebar {
+        max-height: 200px;
+    }
+}

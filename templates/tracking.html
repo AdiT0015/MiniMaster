@@ -1,0 +1,278 @@
+{% extends 'base.html' %}
+
+{% block title %}Live Tracking - Bus Management System{% endblock %}
+
+{% block page_title %}Live Bus Tracking{% endblock %}
+
+{% block head_extra %}
+<style>
+    .tracking-container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 200px);
+        min-height: 600px;
+    }
+    
+    @media (min-width: 992px) {
+        .tracking-container {
+            flex-direction: row;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-wrap align-items-center gap-3">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="mapViewDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-map me-1"></i> Map View
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="mapViewDropdown">
+                            <li><a class="dropdown-item active" href="#">Standard View</a></li>
+                            <li><a class="dropdown-item" href="#">Satellite View</a></li>
+                            <li><a class="dropdown-item" href="#">Traffic View</a></li>
+                        </ul>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="autoRefreshSwitch" checked>
+                        <label class="form-check-label" for="autoRefreshSwitch">Auto Refresh</label>
+                    </div>
+                    <span class="text-muted small">Last updated: <span id="last-update-time">Just now</span></span>
+                    <div class="ms-auto">
+                        <button class="btn btn-outline-secondary" onclick="refreshMap()">
+                            <i class="fas fa-sync-alt me-1"></i> Refresh Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="tracking-container">
+    <!-- Sidebar with route filters and bus info -->
+    <div class="card me-lg-3 mb-3 mb-lg-0" style="flex: 0 0 300px;">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Bus Information</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="accordion" id="trackingSidebar">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingRoutes">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRoutes" aria-expanded="true" aria-controls="collapseRoutes">
+                            Route Filters
+                        </button>
+                    </h2>
+                    <div id="collapseRoutes" class="accordion-collapse collapse show" aria-labelledby="headingRoutes">
+                        <div class="accordion-body" id="route-controls">
+                            <!-- Route controls will be added here by JavaScript -->
+                            <div class="d-flex justify-content-between mb-2">
+                                <button class="btn btn-sm btn-outline-primary" onclick="selectAllRoutes(true)">Select All</button>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="selectAllRoutes(false)">Deselect All</button>
+                            </div>
+                            <!-- Route filters will be added dynamically by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingBuses">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBuses" aria-expanded="true" aria-controls="collapseBuses">
+                            Active Buses
+                        </button>
+                    </h2>
+                    <div id="collapseBuses" class="accordion-collapse collapse show" aria-labelledby="headingBuses">
+                        <div class="accordion-body bus-info-sidebar p-2" id="bus-list">
+                            <!-- Bus list will be added dynamically by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingLegend">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLegend" aria-expanded="false" aria-controls="collapseLegend">
+                            Legend
+                        </button>
+                    </h2>
+                    <div id="collapseLegend" class="accordion-collapse collapse" aria-labelledby="headingLegend">
+                        <div class="accordion-body">
+                            <div class="mb-2">
+                                <span data-status="On Time" class="d-block">On Time</span>
+                            </div>
+                            <div class="mb-2">
+                                <span data-status="Delayed" class="d-block">Delayed</span>
+                            </div>
+                            <div class="mb-2">
+                                <span data-status="Ahead of Schedule" class="d-block">Ahead of Schedule</span>
+                            </div>
+                            <div class="mb-2">
+                                <span data-status="Out of Service" class="d-block">Out of Service</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Map container -->
+    <div class="card" style="flex-grow: 1;">
+        <div class="card-body p-2">
+            <div id="map" style="height: 100%; min-height: 500px;"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Bus details modal -->
+<div class="modal fade" id="busDetailsModal" tabindex="-1" aria-labelledby="busDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="busDetailsModalLabel">Bus B1001 Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between mb-3">
+                    <div>
+                        <h6>Current Status</h6>
+                        <span data-status="On Time" class="fs-5">On Time</span>
+                    </div>
+                    <div class="text-end">
+                        <h6>Current Route</h6>
+                        <span data-route-color="#e74c3c" class="fs-5">D1: Downtown Express</span>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>Bus Information</h6>
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <th>Registration</th>
+                                    <td>XYZ-1234</td>
+                                </tr>
+                                <tr>
+                                    <th>Capacity</th>
+                                    <td>42 passengers</td>
+                                </tr>
+                                <tr>
+                                    <th>Current Speed</th>
+                                    <td>35 km/h</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Driver Information</h6>
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <th>Name</th>
+                                    <td>John Smith</td>
+                                </tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <td>D001</td>
+                                </tr>
+                                <tr>
+                                    <th>Contact</th>
+                                    <td>(555) 123-4567</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <h6>Schedule</h6>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Stop</th>
+                            <th>Scheduled Time</th>
+                            <th>Estimated Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Central Station</td>
+                            <td>9:00 AM</td>
+                            <td>Departed</td>
+                        </tr>
+                        <tr class="table-primary">
+                            <td>Main St & 5th Ave</td>
+                            <td>9:15 AM</td>
+                            <td>9:15 AM (Current)</td>
+                        </tr>
+                        <tr>
+                            <td>Commerce Plaza</td>
+                            <td>9:25 AM</td>
+                            <td>9:25 AM</td>
+                        </tr>
+                        <tr>
+                            <td>Downtown Terminal</td>
+                            <td>9:40 AM</td>
+                            <td>9:40 AM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">
+                    <i class="fas fa-phone me-1"></i> Contact Driver
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+<script>
+    // Tracking page specific scripts
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the map
+        initMap();
+        
+        // Set up refresh timer (30 seconds)
+        const refreshInterval = 30; // seconds
+        let countdown = refreshInterval;
+        
+        setInterval(function() {
+            if (document.getElementById('autoRefreshSwitch').checked) {
+                countdown--;
+                
+                if (countdown <= 0) {
+                    refreshMap();
+                    countdown = refreshInterval;
+                }
+                
+                // Update last refresh time
+                document.getElementById('last-update-time').textContent = countdown > 0 ? 
+                    `${countdown}s ago` : 'Just now';
+            }
+        }, 1000);
+    });
+    
+    // Function to manually refresh the map
+    function refreshMap() {
+        fetchBusLocations();
+        document.getElementById('last-update-time').textContent = 'Just now';
+    }
+    
+    // Function to select/deselect all routes
+    function selectAllRoutes(select) {
+        const checkboxes = document.querySelectorAll('#route-controls input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = select;
+            // Trigger change event to update map
+            const event = new Event('change');
+            checkbox.dispatchEvent(event);
+        });
+    }
+</script>
+{% endblock %}

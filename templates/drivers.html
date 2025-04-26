@@ -1,0 +1,512 @@
+{% extends 'base.html' %}
+
+{% block title %}Drivers - Bus Management System{% endblock %}
+
+{% block page_title %}Driver Management{% endblock %}
+
+{% block header_actions %}
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDriverModal">
+    <i class="fas fa-user-plus me-2"></i>Add New Driver
+</button>
+{% endblock %}
+
+{% block content %}
+<!-- Driver filter controls -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-wrap align-items-center gap-3">
+                    <div class="input-group" style="max-width: 300px;">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Search drivers..." id="driver-search">
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-outline-secondary">All</button>
+                        <button type="button" class="btn btn-outline-secondary">Available</button>
+                        <button type="button" class="btn btn-outline-secondary">On Duty</button>
+                        <button type="button" class="btn btn-outline-secondary">Off Duty</button>
+                        <button type="button" class="btn btn-outline-secondary">On Leave</button>
+                    </div>
+                    <div class="ms-auto">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="driverSortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-sort me-1"></i> Sort by
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="driverSortDropdown">
+                                <li><a class="dropdown-item" href="#">Name</a></li>
+                                <li><a class="dropdown-item" href="#">ID</a></li>
+                                <li><a class="dropdown-item" href="#">Status</a></li>
+                                <li><a class="dropdown-item" href="#">Experience</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Drivers table -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">License</th>
+                                <th scope="col">Contact</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Current Route</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>D001</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-placeholder bg-primary text-white rounded-circle me-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                            JS
+                                        </div>
+                                        John Smith
+                                    </div>
+                                </td>
+                                <td>CDL-12345</td>
+                                <td>(555) 123-4567</td>
+                                <td><span data-status="On Duty">On Duty</span></td>
+                                <td><span data-route-color="#e74c3c">D1</span></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewDriverModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editDriverModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>D002</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-placeholder bg-success text-white rounded-circle me-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                            JD
+                                        </div>
+                                        Jane Doe
+                                    </div>
+                                </td>
+                                <td>CDL-23456</td>
+                                <td>(555) 234-5678</td>
+                                <td><span data-status="On Duty">On Duty</span></td>
+                                <td><span data-route-color="#3498db">U2</span></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewDriverModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editDriverModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>D003</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-placeholder bg-warning text-dark rounded-circle me-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                            RJ
+                                        </div>
+                                        Robert Johnson
+                                    </div>
+                                </td>
+                                <td>CDL-34567</td>
+                                <td>(555) 345-6789</td>
+                                <td><span data-status="On Duty">On Duty</span></td>
+                                <td><span data-route-color="#2ecc71">C3</span></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewDriverModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editDriverModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>D004</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-placeholder bg-danger text-white rounded-circle me-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                            MG
+                                        </div>
+                                        Maria Garcia
+                                    </div>
+                                </td>
+                                <td>CDL-45678</td>
+                                <td>(555) 456-7890</td>
+                                <td><span data-status="On Duty">On Duty</span></td>
+                                <td><span data-route-color="#e74c3c">D1</span></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewDriverModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editDriverModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>D005</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-placeholder bg-info text-white rounded-circle me-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                            DL
+                                        </div>
+                                        David Lee
+                                    </div>
+                                </td>
+                                <td>CDL-56789</td>
+                                <td>(555) 567-8901</td>
+                                <td><span data-status="On Duty">On Duty</span></td>
+                                <td><span data-route-color="#e74c3c">D1</span></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewDriverModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editDriverModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>D006</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-placeholder bg-secondary text-white rounded-circle me-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                            SW
+                                        </div>
+                                        Sarah Williams
+                                    </div>
+                                </td>
+                                <td>CDL-67890</td>
+                                <td>(555) 678-9012</td>
+                                <td><span data-status="Available">Available</span></td>
+                                <td>-</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewDriverModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editDriverModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>D007</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-placeholder bg-dark text-white rounded-circle me-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                            TB
+                                        </div>
+                                        Thomas Brown
+                                    </div>
+                                </td>
+                                <td>CDL-78901</td>
+                                <td>(555) 789-0123</td>
+                                <td><span data-status="Off Duty">Off Duty</span></td>
+                                <td>-</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewDriverModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editDriverModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>D008</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-placeholder bg-primary text-white rounded-circle me-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+                                            LH
+                                        </div>
+                                        Lisa Hernandez
+                                    </div>
+                                </td>
+                                <td>CDL-89012</td>
+                                <td>(555) 890-1234</td>
+                                <td><span data-status="On Leave">On Leave</span></td>
+                                <td>-</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewDriverModal">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editDriverModal">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mt-4">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Driver Modal -->
+<div class="modal fade" id="addDriverModal" tabindex="-1" aria-labelledby="addDriverModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDriverModalLabel">Add New Driver</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="driverName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="driverName" required>
+                        <div class="invalid-feedback">
+                            Please provide the driver's name.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="driverID" class="form-label">Employee ID</label>
+                        <input type="text" class="form-control" id="driverID" required>
+                        <div class="invalid-feedback">
+                            Please provide an employee ID.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="licenseNumber" class="form-label">License Number</label>
+                        <input type="text" class="form-control" id="licenseNumber" required>
+                        <div class="invalid-feedback">
+                            Please provide a license number.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phoneNumber" required>
+                        <div class="invalid-feedback">
+                            Please provide a phone number.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="emailAddress" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="emailAddress">
+                        <div class="invalid-feedback">
+                            Please provide a valid email address.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="driverStatus" class="form-label">Status</label>
+                        <select class="form-select" id="driverStatus" required>
+                            <option value="Available">Available</option>
+                            <option value="On Duty">On Duty</option>
+                            <option value="Off Duty">Off Duty</option>
+                            <option value="On Leave">On Leave</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Save Driver</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Driver Modal -->
+<div class="modal fade" id="viewDriverModal" tabindex="-1" aria-labelledby="viewDriverModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewDriverModalLabel">Driver Profile: John Smith</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 text-center mb-4">
+                        <div class="avatar-placeholder bg-primary text-white rounded-circle mx-auto mb-3" style="width: 128px; height: 128px; display: flex; align-items: center; justify-content: center; font-size: 48px;">
+                            JS
+                        </div>
+                        <h5>John Smith</h5>
+                        <p class="mb-1"><span data-status="On Duty">On Duty</span></p>
+                        <p class="text-muted">Employee ID: D001</p>
+                    </div>
+                    <div class="col-md-8">
+                        <h6>Driver Information</h6>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>License Number</th>
+                                    <td>CDL-12345</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone</th>
+                                    <td>(555) 123-4567</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>jsmith@example.com</td>
+                                </tr>
+                                <tr>
+                                    <th>Current Route</th>
+                                    <td><span data-route-color="#e74c3c">D1: Downtown Express</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Current Bus</th>
+                                    <td>B1001</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <h6>Recent Activity</h6>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Route</th>
+                                    <th>Bus</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Today, 8:00 AM</td>
+                                    <td><span data-route-color="#e74c3c">D1</span></td>
+                                    <td>B1001</td>
+                                    <td><span data-status="On Duty">On Duty</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Yesterday, 4:30 PM</td>
+                                    <td><span data-route-color="#e74c3c">D1</span></td>
+                                    <td>B1001</td>
+                                    <td><span data-status="Off Duty">Off Duty</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Yesterday, 8:00 AM</td>
+                                    <td><span data-route-color="#e74c3c">D1</span></td>
+                                    <td>B1001</td>
+                                    <td><span data-status="On Duty">On Duty</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#editDriverModal">
+                    <i class="fas fa-edit me-1"></i> Edit Driver
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Driver Modal -->
+<div class="modal fade" id="editDriverModal" tabindex="-1" aria-labelledby="editDriverModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editDriverModalLabel">Edit Driver</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Same form as Add Driver modal with prefilled values -->
+                <form class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="editDriverName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="editDriverName" value="John Smith" required>
+                        <div class="invalid-feedback">
+                            Please provide the driver's name.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDriverID" class="form-label">Employee ID</label>
+                        <input type="text" class="form-control" id="editDriverID" value="D001" required readonly>
+                        <small class="form-text text-muted">Employee ID cannot be changed</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editLicenseNumber" class="form-label">License Number</label>
+                        <input type="text" class="form-control" id="editLicenseNumber" value="CDL-12345" required>
+                        <div class="invalid-feedback">
+                            Please provide a license number.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPhoneNumber" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="editPhoneNumber" value="(555) 123-4567" required>
+                        <div class="invalid-feedback">
+                            Please provide a phone number.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmailAddress" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="editEmailAddress" value="jsmith@example.com">
+                        <div class="invalid-feedback">
+                            Please provide a valid email address.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDriverStatus" class="form-label">Status</label>
+                        <select class="form-select" id="editDriverStatus" required>
+                            <option value="Available">Available</option>
+                            <option value="On Duty" selected>On Duty</option>
+                            <option value="Off Duty">Off Duty</option>
+                            <option value="On Leave">On Leave</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger me-auto">Delete Driver</button>
+                <button type="button" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

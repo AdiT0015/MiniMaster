@@ -1,0 +1,478 @@
+{% extends 'base.html' %}
+
+{% block title %}Routes - Bus Management System{% endblock %}
+
+{% block page_title %}Route Management{% endblock %}
+
+{% block header_actions %}
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRouteModal">
+    <i class="fas fa-plus me-2"></i>Add New Route
+</button>
+{% endblock %}
+
+{% block content %}
+<!-- Route filter controls -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex flex-wrap align-items-center gap-3">
+                    <div class="input-group" style="max-width: 300px;">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                        <input type="text" class="form-control" placeholder="Search routes..." id="route-search">
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-outline-secondary">All</button>
+                        <button type="button" class="btn btn-outline-secondary">Active</button>
+                        <button type="button" class="btn btn-outline-secondary">Inactive</button>
+                    </div>
+                    <div class="ms-auto">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-sort me-1"></i> Sort by
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                                <li><a class="dropdown-item" href="#">Route Number</a></li>
+                                <li><a class="dropdown-item" href="#">Name</a></li>
+                                <li><a class="dropdown-item" href="#">Number of Buses</a></li>
+                                <li><a class="dropdown-item" href="#">Status</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Route cards -->
+<div class="row g-3">
+    <!-- Route 1 -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #e74c3c; color: white;">
+                <h5 class="card-title mb-0">Route D1</h5>
+                <span class="badge bg-light text-dark">5 Buses</span>
+            </div>
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Downtown Express</h6>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>Start Point:</strong>
+                        <span>Central Station</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>End Point:</strong>
+                        <span>Downtown Terminal</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>Status:</strong>
+                        <span data-status="Active">Active</span>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-sm btn-outline-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#viewRouteModal">
+                        <i class="fas fa-eye me-1"></i> View
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary flex-grow-1" data-bs-toggle="modal" data-bs-target="#editRouteModal">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Route 2 -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #3498db; color: white;">
+                <h5 class="card-title mb-0">Route U2</h5>
+                <span class="badge bg-light text-dark">4 Buses</span>
+            </div>
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Uptown Local</h6>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>Start Point:</strong>
+                        <span>Riverside Plaza</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>End Point:</strong>
+                        <span>Uptown Square</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>Status:</strong>
+                        <span data-status="Active">Active</span>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-sm btn-outline-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#viewRouteModal">
+                        <i class="fas fa-eye me-1"></i> View
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary flex-grow-1" data-bs-toggle="modal" data-bs-target="#editRouteModal">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Route 3 -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #2ecc71; color: white;">
+                <h5 class="card-title mb-0">Route C3</h5>
+                <span class="badge bg-light text-dark">6 Buses</span>
+            </div>
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Cross Town</h6>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>Start Point:</strong>
+                        <span>West End</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>End Point:</strong>
+                        <span>East Village</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>Status:</strong>
+                        <span data-status="Active">Active</span>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-sm btn-outline-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#viewRouteModal">
+                        <i class="fas fa-eye me-1"></i> View
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary flex-grow-1" data-bs-toggle="modal" data-bs-target="#editRouteModal">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Route 4 -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #f39c12; color: white;">
+                <h5 class="card-title mb-0">Route A4</h5>
+                <span class="badge bg-light text-dark">3 Buses</span>
+            </div>
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">Airport Express</h6>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>Start Point:</strong>
+                        <span>Central Station</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>End Point:</strong>
+                        <span>International Airport</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>Status:</strong>
+                        <span data-status="Active">Active</span>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-sm btn-outline-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#viewRouteModal">
+                        <i class="fas fa-eye me-1"></i> View
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary flex-grow-1" data-bs-toggle="modal" data-bs-target="#editRouteModal">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Route 5 -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #9b59b6; color: white;">
+                <h5 class="card-title mb-0">Route S5</h5>
+                <span class="badge bg-light text-dark">3 Buses</span>
+            </div>
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">South Shore</h6>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>Start Point:</strong>
+                        <span>City Center</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>End Point:</strong>
+                        <span>South Beach</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>Status:</strong>
+                        <span data-status="Active">Active</span>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-sm btn-outline-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#viewRouteModal">
+                        <i class="fas fa-eye me-1"></i> View
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary flex-grow-1" data-bs-toggle="modal" data-bs-target="#editRouteModal">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Route 6 -->
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100">
+            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #e67e22; color: white;">
+                <h5 class="card-title mb-0">Route N6</h5>
+                <span class="badge bg-light text-dark">3 Buses</span>
+            </div>
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">North Express</h6>
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between">
+                        <strong>Start Point:</strong>
+                        <span>Downtown Terminal</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>End Point:</strong>
+                        <span>Northern Hills</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <strong>Status:</strong>
+                        <span data-status="Inactive">Inactive</span>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <button class="btn btn-sm btn-outline-primary flex-grow-1" data-bs-toggle="modal" data-bs-target="#viewRouteModal">
+                        <i class="fas fa-eye me-1"></i> View
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary flex-grow-1" data-bs-toggle="modal" data-bs-target="#editRouteModal">
+                        <i class="fas fa-edit me-1"></i> Edit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Route Modal -->
+<div class="modal fade" id="addRouteModal" tabindex="-1" aria-labelledby="addRouteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRouteModalLabel">Add New Route</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="routeNumber" class="form-label">Route Number</label>
+                        <input type="text" class="form-control" id="routeNumber" required>
+                        <div class="invalid-feedback">
+                            Please provide a route number.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="routeName" class="form-label">Route Name</label>
+                        <input type="text" class="form-control" id="routeName" required>
+                        <div class="invalid-feedback">
+                            Please provide a route name.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="startPoint" class="form-label">Start Point</label>
+                        <input type="text" class="form-control" id="startPoint" required>
+                        <div class="invalid-feedback">
+                            Please provide a starting point.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endPoint" class="form-label">End Point</label>
+                        <input type="text" class="form-control" id="endPoint" required>
+                        <div class="invalid-feedback">
+                            Please provide an end point.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="routeColor" class="form-label">Route Color</label>
+                        <input type="color" class="form-control form-control-color" id="routeColor" value="#3498db" title="Choose route color">
+                    </div>
+                    <div class="mb-3">
+                        <label for="routeStatus" class="form-label">Status</label>
+                        <select class="form-select" id="routeStatus" required>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Save Route</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Route Modal (simplified for brevity) -->
+<div class="modal fade" id="viewRouteModal" tabindex="-1" aria-labelledby="viewRouteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #e74c3c; color: white;">
+                <h5 class="modal-title" id="viewRouteModalLabel">Route D1: Downtown Express</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <h6>Route Details</h6>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>Start Point</th>
+                                    <td>Central Station</td>
+                                </tr>
+                                <tr>
+                                    <th>End Point</th>
+                                    <td>Downtown Terminal</td>
+                                </tr>
+                                <tr>
+                                    <th>Status</th>
+                                    <td><span data-status="Active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <th>Assigned Buses</th>
+                                    <td>5</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Schedule</h6>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Weekdays</th>
+                                    <th>Weekends</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>6:00 AM - 11:00 PM</td>
+                                    <td>7:00 AM - 10:00 PM</td>
+                                </tr>
+                                <tr>
+                                    <th>Frequency</th>
+                                    <td>Every 15 minutes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <h6>Assigned Buses</h6>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Bus Number</th>
+                            <th>Driver</th>
+                            <th>Status</th>
+                            <th>Location</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>B1001</td>
+                            <td>John Smith</td>
+                            <td><span data-status="On Time">On Time</span></td>
+                            <td>Central Station</td>
+                        </tr>
+                        <tr>
+                            <td>B1005</td>
+                            <td>Maria Garcia</td>
+                            <td><span data-status="Delayed">Delayed</span></td>
+                            <td>Main St & 5th Ave</td>
+                        </tr>
+                        <tr>
+                            <td>B1008</td>
+                            <td>David Lee</td>
+                            <td><span data-status="On Time">On Time</span></td>
+                            <td>Commerce Plaza</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#editRouteModal">
+                    <i class="fas fa-edit me-1"></i> Edit Route
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Route Modal (simplified, reusing form from add) -->
+<div class="modal fade" id="editRouteModal" tabindex="-1" aria-labelledby="editRouteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editRouteModalLabel">Edit Route</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Same form as Add Route modal with prefilled values -->
+                <form class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="editRouteNumber" class="form-label">Route Number</label>
+                        <input type="text" class="form-control" id="editRouteNumber" value="D1" required>
+                        <div class="invalid-feedback">
+                            Please provide a route number.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editRouteName" class="form-label">Route Name</label>
+                        <input type="text" class="form-control" id="editRouteName" value="Downtown Express" required>
+                        <div class="invalid-feedback">
+                            Please provide a route name.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editStartPoint" class="form-label">Start Point</label>
+                        <input type="text" class="form-control" id="editStartPoint" value="Central Station" required>
+                        <div class="invalid-feedback">
+                            Please provide a starting point.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEndPoint" class="form-label">End Point</label>
+                        <input type="text" class="form-control" id="editEndPoint" value="Downtown Terminal" required>
+                        <div class="invalid-feedback">
+                            Please provide an end point.
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editRouteColor" class="form-label">Route Color</label>
+                        <input type="color" class="form-control form-control-color" id="editRouteColor" value="#e74c3c" title="Choose route color">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editRouteStatus" class="form-label">Status</label>
+                        <select class="form-select" id="editRouteStatus" required>
+                            <option value="Active" selected>Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger me-auto">Delete Route</button>
+                <button type="button" class="btn btn-primary">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
