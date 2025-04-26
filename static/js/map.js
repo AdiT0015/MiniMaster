@@ -35,12 +35,35 @@ function createBusIcon(color = '#3498db') {
 
 // Fetch bus locations from the server
 function fetchBusLocations() {
-    // In a real implementation, this would make an API call to get real-time bus data
-    // For this demo, we'll use simulated data
-    
-    const busLocations = simulateBusLocations();
-    updateBusMarkers(busLocations);
-    updateBusList(busLocations);
+    // Make an API call to get real-time bus data
+    fetch('/api/buses')
+        .then(response => response.json())
+        .then(data => {
+            const busLocations = data.map(bus => {
+                return {
+                    id: bus.id,
+                    busNumber: bus.bus_number,
+                    lat: bus.current_location_lat,
+                    lng: bus.current_location_lng,
+                    routeName: bus.route_name,
+                    routeNumber: bus.route_number,
+                    routeColor: bus.route_color || '#3498db',
+                    status: bus.on_time_status,
+                    driverName: bus.driver_name || 'Unassigned',
+                    speed: Math.floor(Math.random() * 40) + 10, // Simulated speed
+                    lastUpdated: 'just now'
+                };
+            });
+            updateBusMarkers(busLocations);
+            updateBusList(busLocations);
+        })
+        .catch(error => {
+            console.error('Error fetching bus locations:', error);
+            // Fallback to simulated data if the API call fails
+            const busLocations = simulateBusLocations();
+            updateBusMarkers(busLocations);
+            updateBusList(busLocations);
+        });
 }
 
 // Update bus markers on the map
@@ -143,46 +166,91 @@ function setupRouteControls() {
     const routeControls = document.getElementById('route-controls');
     if (!routeControls) return;
     
-    // In a real implementation, fetch routes from the server
-    const routes = simulateRoutes();
-    
-    routes.forEach(route => {
-        const routeControl = document.createElement('div');
-        routeControl.className = 'form-check form-switch mb-2';
-        routeControl.innerHTML = `
-            <input class="form-check-input" type="checkbox" id="route-${route.id}" checked data-route-id="${route.id}">
-            <label class="form-check-label" for="route-${route.id}">
-                <span data-route-color="${route.color}" class="fw-bold">${route.number}: ${route.name}</span>
-            </label>
-        `;
-        routeControls.appendChild(routeControl);
-        
-        // Add route color indicator
-        const routeEl = routeControl.querySelector('[data-route-color]');
-        const routeIndicator = document.createElement('span');
-        routeIndicator.classList.add('route-color-indicator');
-        routeIndicator.style.backgroundColor = routeEl.dataset.routeColor;
-        routeEl.prepend(routeIndicator);
-        
-        // Add event listener for route toggle
-        const checkbox = routeControl.querySelector('input[type="checkbox"]');
-        checkbox.addEventListener('change', function() {
-            toggleRouteVisibility(route.id, this.checked);
+    // Fetch routes from the server
+    fetch('/api/routes')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(route => {
+                const routeControl = document.createElement('div');
+                routeControl.className = 'form-check form-switch mb-2';
+                routeControl.innerHTML = `
+                    <input class="form-check-input" type="checkbox" id="route-${route.id}" checked data-route-id="${route.id}">
+                    <label class="form-check-label" for="route-${route.id}">
+                        <span data-route-color="${route.color_code}" class="fw-bold">${route.route_number}: ${route.name}</span>
+                    </label>
+                `;
+                routeControls.appendChild(routeControl);
+                
+                // Add route color indicator
+                const routeEl = routeControl.querySelector('[data-route-color]');
+                const routeIndicator = document.createElement('span');
+                routeIndicator.classList.add('route-color-indicator');
+                routeIndicator.style.backgroundColor = routeEl.dataset.routeColor;
+                routeEl.prepend(routeIndicator);
+                
+                // Add event listener for route toggle
+                const checkbox = routeControl.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', function() {
+                    toggleRouteVisibility(route.id, this.checked);
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching routes:', error);
+            // Fallback to simulated data if the API call fails
+            const routes = simulateRoutes();
+            routes.forEach(route => {
+                const routeControl = document.createElement('div');
+                routeControl.className = 'form-check form-switch mb-2';
+                routeControl.innerHTML = `
+                    <input class="form-check-input" type="checkbox" id="route-${route.id}" checked data-route-id="${route.id}">
+                    <label class="form-check-label" for="route-${route.id}">
+                        <span data-route-color="${route.color}" class="fw-bold">${route.number}: ${route.name}</span>
+                    </label>
+                `;
+                routeControls.appendChild(routeControl);
+                
+                // Add route color indicator
+                const routeEl = routeControl.querySelector('[data-route-color]');
+                const routeIndicator = document.createElement('span');
+                routeIndicator.classList.add('route-color-indicator');
+                routeIndicator.style.backgroundColor = routeEl.dataset.routeColor;
+                routeEl.prepend(routeIndicator);
+                
+                // Add event listener for route toggle
+                const checkbox = routeControl.querySelector('input[type="checkbox"]');
+                checkbox.addEventListener('change', function() {
+                    toggleRouteVisibility(route.id, this.checked);
+                });
+            });
         });
-    });
 }
 
 // Toggle visibility of buses on a specific route
 function toggleRouteVisibility(routeId, visible) {
-    // In a real implementation, filter buses based on their route
-    // For this demo, we'll just simulate it
     console.log(`Route ${routeId} visibility: ${visible}`);
     
-    // This would update the map markers based on visibility
-    Object.values(busMarkers).forEach(marker => {
-        // In a real implementation, check if the marker belongs to this route
-        // For now, we'll keep all markers visible
-    });
+    // Fetch buses to check their routes
+    fetch('/api/buses')
+        .then(response => response.json())
+        .then(buses => {
+            // Loop through all markers and update visibility
+            Object.keys(busMarkers).forEach(markerId => {
+                const bus = buses.find(b => b.id.toString() === markerId);
+                
+                if (bus && bus.route_id === routeId) {
+                    // If the bus belongs to this route, update visibility
+                    if (visible) {
+                        map.addLayer(busMarkers[markerId]);
+                    } else {
+                        map.removeLayer(busMarkers[markerId]);
+                    }
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching buses for route filtering:', error);
+        });
 }
 
 // Simulate bus location data (for demo purposes)

@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle status indicators display
     const statusElements = document.querySelectorAll('[data-status]');
     statusElements.forEach(element => {
-        const status = element.dataset.status.toLowerCase().replace(' ', '-');
+        const status = element.dataset.status.toLowerCase().replace(/\s+/g, '-');
         const indicator = document.createElement('span');
         indicator.classList.add('status-indicator', `status-${status}`);
         element.prepend(indicator);
