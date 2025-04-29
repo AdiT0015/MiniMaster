@@ -1,5 +1,6 @@
 // Main JavaScript file for the Bus Management System
 
+
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize Bootstrap tooltips
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
